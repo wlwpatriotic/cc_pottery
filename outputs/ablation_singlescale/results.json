@@ -1,0 +1,5 @@
+{
+  "ablation": "single_scale",
+  "val_acc": 0.3884297520661157,
+  "test_culture": 0.35714285714285715
+}

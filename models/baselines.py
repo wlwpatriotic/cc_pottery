@@ -1,3 +1,4 @@
+
 """
 Baseline models for fine-grained pottery recognition.
 Includes: CLIP zero-shot, ViT fine-tuning, DINOv2, and hierarchical classifiers.

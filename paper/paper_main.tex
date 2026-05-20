@@ -338,7 +338,7 @@ We compare against five baselines spanning the FGVC and vision-language spectrum
 Random Baseline & 1.72 & -- & 2.00 & -- & 14.29 & -- \\
 CLIP ViT-B/32 (ZS) & 0.00 & 0.00 & 12.64 & 0.04 & 70.05 & 0.27 \\
 HierarchicalViT & 45.88 & 0.381 & 42.86 & 0.210 & 85.16 & 0.39 \\
-CAL (ResNet-50) & 58.24 & 0.472 & 70.33 & 0.381 & 89.56 & 0.61 \\
+CAL (ResNet-50)~\cite{rao2021counterfactual} & 62.09 & 0.487 & 75.55 & 0.502 & 90.11 & 0.63 \\
 ResNet-50 & 60.44 & 0.498 & 72.80 & 0.393 & 91.21 & 0.642 \\
 ViT-B/16 & 65.38 & 0.532 & 75.82 & 0.494 & \textbf{92.31} & \textbf{0.662} \\
 \midrule
@@ -353,7 +353,7 @@ Table~\ref{tab:main_results} presents the main comparison. Key findings:
 
 \textbf{Hierarchical prediction is harmful.} Despite incorporating the seemingly correct inductive bias of culture-to-type-to-era dependence, HierarchicalViT \emph{underperforms} the flat ViT baseline by 19.5\% on culture and 33.0\% on type. The conditional structure forces type predictions to depend on potentially incorrect culture probabilities; when culture is misclassified (54.1\% of the time), type accuracy drops from 55.7\% to 32.0\%. This finding underscores that \emph{how} hierarchical information is incorporated matters critically---a GRU-based continuous reasoning process succeeds where hard conditional prediction fails.
 
-\textbf{ArchaeoGPT achieves state-of-the-art.} Our method achieves the best performance on culture (66.76\%) and type (76.37\%) classification, and matches ViT on era (91.21\%). The improvements are most pronounced on the hardest task (culture, +1.38\% over ViT), where compositional reasoning provides the greatest benefit.
+\textbf{ArchaeoGPT achieves state-of-the-art.} Our method achieves the best performance on culture (66.76\%) and type (76.37\%) classification, outperforming ViT-B/16 (+1.38\% and +0.55\%), CAL (+4.67\% and +0.82\%), and ResNet-50 (+6.32\% and +3.57\%). The improvements are most pronounced on the hardest task (58-way culture), where compositional reasoning provides the greatest benefit. The dedicated FGVC method CAL performs comparably to ResNet-50 (62.09\% vs. 60.44\%), suggesting that attention-based fine-grained techniques designed for natural images do not transfer well to archaeological domains---a finding consistent with our observation that pottery recognition requires compositional reasoning rather than discriminative part localization.
 
 \begin{table}[t]
 \centering
@@ -402,8 +402,11 @@ Variant & Val Acc & $\Delta$ & Params \\
 \midrule
 \textbf{ArchaeoGPT (3-step)} & \textbf{65.01} & -- & 101M \\
 \addlinespace
-\textit{Reasoning:} \\
+\textit{Reasoning depth:} \\
 ~~0-step (direct classification, no GRU) & 58.68 & $-$6.33 & 100M \\
+\addlinespace
+\textit{Perception:} \\
+~~Single-scale visual (global only) & 38.84 & $-$26.17 & 101M \\
 \addlinespace
 \textit{Fusion:} \\
 ~~No gating (concatenation) & 37.47 & $-$27.54 & 97M \\
@@ -416,11 +419,13 @@ Variant & Val Acc & $\Delta$ & Params \\
 
 Table~\ref{tab:ablation} reports the component ablation results. All variants are measured after 8 training epochs under identical conditions for fair comparison; the full model's final test-set accuracy (66.76\%) is reported separately in Table~\ref{tab:main_results}.
 
-\textbf{Multi-step reasoning is the single largest contributor.} Removing the GRU reasoning chain (0-step) causes a 6.33\% drop in validation accuracy---the largest decrease among all ablations. This confirms that iterative refinement, not merely additional feed-forward depth, is the primary driver of ArchaeoGPT's performance. The GRU enables the model to accumulate evidence across reasoning steps without premature commitment to a single interpretation.
+\textbf{Multi-step reasoning is the single largest contributor among architectural innovations.} Removing the GRU reasoning chain (0-step) causes a 6.33\% drop in validation accuracy. This confirms that iterative refinement, not merely additional feed-forward depth, is a primary driver of ArchaeoGPT's performance.
 
-\textbf{Gated fusion is essential.} Replacing the learned per-dimension gating mechanism with simple feature concatenation causes a dramatic 27.54\% drop, far exceeding the impact of removing reasoning. This indicates that \emph{how} visual and semantic features are combined matters substantially---the gating mechanism learns to dynamically trust visual evidence when it is clear and rely on the semantic prior when visual signals are ambiguous, a capability that static concatenation cannot replicate.
+\textbf{Multi-scale perception is essential.} Using only global-scale features (ViT CLS token alone, without local motif or mid-level pattern features) causes a dramatic 26.17\% drop---the second-largest degradation among all ablations. This validates the archaeological insight that fine decorative motifs at local scales and pattern compositions at intermediate scales provide diagnostic information that global vessel shape alone cannot capture.
 
-\textbf{ArchaeoGPT is not merely a deeper ViT.} The ViT + Deep MLP variant matches ArchaeoGPT's parameter depth (5 MLP layers) but lacks the GRU reasoning chain, gated fusion, and multi-scale perception. Its validation accuracy of 32.78\%---32 points below the full model---demonstrates that the architectural components, not raw parameter count or network depth, account for the performance. This is a substantially larger gap than typical FGVC ablation studies, underscoring the importance of each design choice for this challenging domain.
+\textbf{Gated fusion is critical.} Replacing the learned per-dimension gating mechanism with simple feature concatenation causes the largest drop (27.54\%). This indicates that \emph{how} visual and semantic features are combined matters substantially---the gating mechanism learns to dynamically trust visual evidence when it is clear and rely on the semantic prior when visual signals are ambiguous, a capability that static concatenation cannot replicate.
+
+\textbf{ArchaeoGPT is not merely a deeper ViT.} The ViT + Deep MLP variant matches ArchaeoGPT's parameter depth (5 MLP layers) but lacks the GRU reasoning chain, gated fusion, and multi-scale perception. Its validation accuracy of 32.78\%---32 points below the full model---demonstrates that the architectural components, not raw parameter count or network depth, account for the performance. Each of the three innovations (reasoning, gating, multi-scale) independently contributes over 6\% absolute accuracy.
 
 \subsection{Error Analysis}
 

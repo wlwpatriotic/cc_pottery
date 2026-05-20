@@ -1,0 +1,22 @@
+{
+  "archaeogpt_0step": {
+    "name": "ArchaeoGPT 0-Step",
+    "params_M": 100.2,
+    "best_val_acc": 0.5867768595041323
+  },
+  "archaeogpt_1step": {
+    "name": "ArchaeoGPT 1-Step",
+    "params_M": 100.7,
+    "best_val_acc": 0.4738292011019284
+  },
+  "archaeogpt_nogate": {
+    "name": "ArchaeoGPT No Gate",
+    "params_M": 96.6,
+    "best_val_acc": 0.3746556473829201
+  },
+  "archaeogpt_singlescale": {
+    "name": "ArchaeoGPT Single-Scale",
+    "params_M": 101.3,
+    "best_val_acc": 0.3939393939393939
+  }
+}
