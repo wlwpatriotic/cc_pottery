@@ -1,0 +1,10 @@
+{
+  "model": "ArchaeoGPT",
+  "best_val_acc": 0.650137741046832,
+  "test_culture_acc": 0.6675824175824175,
+  "test_type_acc": 0.7637362637362637,
+  "test_era_acc": 0.9120879120879121,
+  "test_culture_macro_f1": 0.48931637804591654,
+  "test_type_macro_f1": 0.5257672902198655,
+  "test_era_macro_f1": 0.5565964221072559
+}

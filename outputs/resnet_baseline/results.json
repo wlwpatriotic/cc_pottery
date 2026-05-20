@@ -1,0 +1,12 @@
+{
+  "model": "ResNet-50",
+  "best_val_acc": 0.5840220385674931,
+  "test_culture_acc": 0.6043956043956044,
+  "test_type_acc": 0.728021978021978,
+  "test_era_acc": 0.9120879120879121,
+  "test_culture_macro_f1": 0.4979971271534044,
+  "test_type_macro_f1": 0.39289157758210913,
+  "test_era_macro_f1": 0.6421160295103957,
+  "cross_type_acc_culture_correct": 0.7954545454545454,
+  "cross_type_acc_culture_wrong": 0.625
+}

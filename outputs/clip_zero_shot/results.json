@@ -1,0 +1,6 @@
+{
+  "model": "CLIP ViT-B/32 (Zero-Shot)",
+  "test_culture_acc": 0.0,
+  "test_type_acc": 0.12637362637362637,
+  "test_era_acc": 0.7005494505494505
+}

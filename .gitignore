@@ -1,0 +1,46 @@
+# Model checkpoints (huge files)
+outputs/*/best_model.pt
+outputs/*/training_history.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.egg-info/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.synctex*
+paper_build/
+
+# Matplotlib cache
+*.matplotlib/
+
+# Original PDF volumes (too large)
+彩陶/
+
+# Original CSV extracts (redundant with JSON)
+提取结果_csv/
+
+# Temp scripts
+C:/Users/wlw/*.py
+/tmp/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Claude internal
+.claude/
+
+# Environment
+.env
